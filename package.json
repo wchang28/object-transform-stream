@@ -1,0 +1,24 @@
+{
+  "name": "object-transform-stream",
+  "version": "1.0.0",
+  "description": "Object Transform Stream",
+  "main": "./js/index.js",
+  "types": "./js/index.d.ts",
+  "scripts": {
+    "test": "node ./js/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wchang28/object-transform-stream.git"
+  },
+  "author": "Wen Chang",
+  "license": "MIT",
+  "dependencies": {
+    "@types/event-stream": "^3.3.33",
+    "@types/lodash": "^4.14.85",
+    "@types/node": "^8.0.53",
+    "JSONStream": "^1.3.1",
+    "lodash": "^4.17.4",
+    "string-to-stream": "^1.1.0"
+  }
+}
