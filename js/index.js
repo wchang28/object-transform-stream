@@ -13,21 +13,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var stream_1 = require("stream");
 var ObjectTransformStream = /** @class */ (function (_super) {
     __extends(ObjectTransformStream, _super);
-    function ObjectTransformStream(transformer) {
+    function ObjectTransformStream(transformer, filter) {
         var _this = _super.call(this, { objectMode: true }) || this;
         _this.transformer = transformer;
+        _this._index = 0;
+        _this._count = 0;
+        _this._filter = (filter ? filter : function (input, index) { return Promise.resolve(true); });
         return _this;
     }
     ObjectTransformStream.prototype._transform = function (chunk, encoding, callback) {
         var _this = this;
-        this.transformer(chunk)
+        var i = this._index;
+        this._index++;
+        var push = true;
+        this._filter(chunk, i)
             .then(function (value) {
-            _this.push(value);
+            push = value;
+            return push ? _this.transformer(chunk, i) : Promise.resolve(null);
+        }).then(function (output) {
+            if (push) {
+                _this._count++;
+                _this.push(output);
+            }
             callback();
         }).catch(function (err) {
             _this.emit("error", err);
         });
     };
+    Object.defineProperty(ObjectTransformStream.prototype, "Transformed", {
+        get: function () { return this._count; },
+        enumerable: true,
+        configurable: true
+    });
     return ObjectTransformStream;
 }(stream_1.Transform));
 exports.ObjectTransformStream = ObjectTransformStream;
