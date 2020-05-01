@@ -9,5 +9,5 @@ export declare class ObjectTransformStream<I, O> extends Transform {
     private _filter;
     constructor(transformer: Transformer<I, O>, filter?: Filter<I>);
     _transform(chunk: any, encoding: string, callback: Function): void;
-    readonly Transformed: number;
+    get Transformed(): number;
 }
